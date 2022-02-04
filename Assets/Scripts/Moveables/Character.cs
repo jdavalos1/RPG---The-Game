@@ -8,7 +8,6 @@ public class Character : Moveable
     void Start()
     {
         canMove = true;
-        isRotating = false;
         connectedIndex = 1;
         nextSection = currentSection;
     }
@@ -27,7 +26,6 @@ public class Character : Moveable
         if (Input.GetKey(KeyCode.W)) Move();
         else if (Input.GetKey(KeyCode.A))
         {
-            isRotating = true;
             canMove = false;
 
             connectedIndex--;
@@ -44,7 +42,6 @@ public class Character : Moveable
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            isRotating = true;
             canMove = false;
 
             connectedIndex++;

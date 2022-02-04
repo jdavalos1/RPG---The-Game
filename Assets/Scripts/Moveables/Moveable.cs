@@ -6,7 +6,6 @@ public abstract class Moveable : MonoBehaviour
 {
     public float moveSpeed = 5;
     public bool canMove;
-    public bool isRotating;
 
     [SerializeField]
     private float rotateDuration = 0.5f;
@@ -20,11 +19,12 @@ public abstract class Moveable : MonoBehaviour
 
     protected int connectedIndex;
 
-    public void Move()
+    protected void Move()
     {
         canMove = false;
 
         if (nextSection == null) StartCoroutine(currentSection.Move(transform));
+        else if (currentSection == null && nextSection == null) StartCoroutine(DeadEnd());
         else StartCoroutine(nextSection.Move(transform));
 
         // Move through the current section and set up the next section
@@ -33,9 +33,7 @@ public abstract class Moveable : MonoBehaviour
         {
             currentSection = currentSection.connectedSections[0];
             nextSection = currentSection;
-/*            nextSection = currentSection.connectedSections.Count < 2 ?
-                          null : currentSection.connectedSections[1];
-*/        }
+        }
         else
         {
             currentSection = nextSection;
@@ -53,12 +51,18 @@ public abstract class Moveable : MonoBehaviour
         while (t < rotateDuration)
         {
             t += Time.deltaTime * rotateSpeed;
-            transform.eulerAngles = Vector3.Lerp(startRotation, endRotation, rotateSpeed * t / rotateDuration);
+            transform.eulerAngles = Vector3.Lerp(startRotation, endRotation,
+                                                 rotateSpeed * t / rotateDuration);
             yield return null;
         }
 
-        isRotating = false;
         canMove = true;
+    }
 
+    private IEnumerator DeadEnd()
+    {
+        yield return new WaitForSeconds(1);
+        yield return StartCoroutine(Rotate(new Vector3(0, 180, 0)));
+        canMove = true;
     }
 }
