@@ -17,7 +17,7 @@ public class LSection : Section
     public override IEnumerator Move(Transform character)
     {
         Vector3 localEnd, endPos;
-        Player p = character.GetComponent<Player>();
+        Moveable c = character.GetComponent<Moveable>();
         int i = 0;
        
         // Iterate through all of the sections for movement. Will move until the 0.5 the size
@@ -30,8 +30,8 @@ public class LSection : Section
                                  localEnd.y * character.forward.y,
                                  localEnd.z * character.forward.z);
             yield return StartCoroutine(ForwardMovementInSection(character, endPos));
-            yield return StartCoroutine(p.Rotate(secRotations[i]));
-            p.canMove = false;
+            yield return StartCoroutine(c.Rotate(secRotations[i]));
+            c.canMove = false;
         }
 
         // Move on the last one 1/2 of the scale of the previous one since we stop
@@ -42,6 +42,6 @@ public class LSection : Section
                              localEnd.z * character.forward.z);
         yield return StartCoroutine(ForwardMovementInSection(character, endPos));
 
-        p.canMove = true;
+        c.canMove = true;
     }
 }

@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
         currentSection = newSection;
     }
 
+
     /// <summary>
     /// Handle what key is pressed by the player
     /// </summary>
@@ -54,22 +55,49 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             canMove = false;
-            StartCoroutine(currentSection.Move(transform));
+            if(rotationLocation == -1) StartCoroutine(DeadEnd(new Vector3(0, -180, 0)));
+            else StartCoroutine(currentSection.Move(transform));
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             canMove = false;
             isRotating = true;
 
-            if(currentSection.connectedSections.Count <= 1)
-            {
-                StartCoroutine(DeadEnd(new Vector3(0, 90, 0)));
-            }
-            else if (currentSection.connectedSections.Count == 2)
+            if(currentSection.connectedSections.Count <= 2)
             {
                 StartCoroutine(Rotate(new Vector3(0, 180, 0)));
             }
+            else
+            {
+                StartCoroutine(Rotate(new Vector3(0, 90, 0)));
+            }
+
+            rotationLocation = rotationLocation + 1 < currentSection.connectedSections.Count ?
+                               rotationLocation + 1 : currentSection.connectedSections.Count - 1;
+            currentSection = currentSection.connectedSections[rotationLocation];
+            rotationLocation = currentSection.connectedSections.Count / 2;
+            if (currentSection.connectedSections.Count < 2) rotationLocation = -1;
         }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            canMove = false;
+            isRotating = true;
+
+            if(currentSection.connectedSections.Count <= 2)
+            {
+                StartCoroutine(Rotate(new Vector3(0, -180, 0)));
+            }
+            else
+            {
+                StartCoroutine(Rotate(new Vector3(0, -90, 0)));
+            }
+
+            rotationLocation = rotationLocation - 1 > 0 ? rotationLocation - 1 : 0;
+            currentSection = currentSection.connectedSections[rotationLocation];
+            rotationLocation = currentSection.connectedSections.Count / 2;
+            if (currentSection.connectedSections.Count < 2) rotationLocation = -1;
+        }
+
 /*        else if (Input.GetKeyDown(KeyCode.D))
         {
             canMove = false;
@@ -140,13 +168,12 @@ public class Player : MonoBehaviour
 
     public IEnumerator DeadEnd(Vector3 rot)
     {
-        yield return StartCoroutine(Rotate(rot));
-        canMove = false;
-        isRotating = false;
         yield return new WaitForSeconds(1);
+        isRotating = true;
         yield return StartCoroutine(Rotate(rot * -1));
 
         canMove = true;
         isRotating = false;
+        rotationLocation = 0;
     }
 }

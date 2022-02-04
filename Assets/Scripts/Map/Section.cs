@@ -33,14 +33,14 @@ public class Section : MonoBehaviour
     {
         CharacterController cc = character.GetComponent<CharacterController>();
         Vector3 startPos = new Vector3(0, 0, 0), incVec;
-        Player p = character.GetComponent<Player>();
+        Moveable c = character.GetComponent<Moveable>();
 
         float dist = Vector3.Distance(startPos, endPos);
 
         // The distance threshhold will determine how far we move.
         while (dist > DistanceThreshhold)
         {
-            float inc = Time.deltaTime * p.moveSpeed;
+            float inc = Time.deltaTime * c.moveSpeed;
             incVec = character.forward * inc;
             cc.Move(incVec);
             startPos += incVec;

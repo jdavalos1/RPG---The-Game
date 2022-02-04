@@ -382,6 +382,7 @@ MonoBehaviour:
   connectedSections:
   - {fileID: 1865764190}
   - {fileID: 1000186856}
+  - {fileID: 1377597612}
 --- !u!65 &1000186857
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -554,6 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedSections:
   - {fileID: 1000186856}
+  - {fileID: 1377597612}
   - {fileID: 1457677452}
 --- !u!1 &1457677447
 GameObject:
@@ -665,6 +667,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedSections:
   - {fileID: 1377597612}
+  - {fileID: 1457677452}
 --- !u!1 &1744558847
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,6 +682,7 @@ GameObject:
   - component: {fileID: 1744558848}
   - component: {fileID: 1744558852}
   - component: {fileID: 1744558853}
+  - component: {fileID: 1744558854}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -771,7 +775,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744558847}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45668f59c52307e4196b64d189da634c, type: 3}
   m_Name: 
@@ -801,6 +805,25 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1744558854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744558847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8a78a69714c034d9cc4cfd8feaf723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  canMove: 0
+  isRotating: 0
+  rotateDuration: 1
+  rotateSpeed: 1
+  currentSection: {fileID: 1457677452}
+  nextSection: {fileID: 0}
 --- !u!1 &1757200312
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,6 +966,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedSections:
   - {fileID: 0}
+  - {fileID: 1865764190}
   - {fileID: 1000186856}
   sections:
   - {fileID: 1934989596}

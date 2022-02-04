@@ -10,15 +10,15 @@ using UnityEngine;
     /// <returns></returns>
     public override IEnumerator Move(Transform character)
     {
-        Player p = character.GetComponent<Player>();
+        Moveable p = character.GetComponent<Moveable>();
         Vector3 endPos = new Vector3(transform.lossyScale.x * character.forward.x,
                                      transform.lossyScale.y * character.forward.y,
                                      transform.lossyScale.z * character.forward.z);
 
         yield return StartCoroutine(ForwardMovementInSection(character, endPos));
 
-        p.UpdateCurrentSection(p.rotationLocation < connectedSections.Count?
+/*        p.UpdateCurrentSection(p.rotationLocation < connectedSectionsV.Count?
                                connectedSections[p.rotationLocation] : null);
-        p.canMove = true;
+*/        p.canMove = true;
     }
 }
