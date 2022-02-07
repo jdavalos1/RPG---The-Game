@@ -17,8 +17,6 @@ using UnityEngine;
 
         yield return StartCoroutine(ForwardMovementInSection(character, endPos));
 
-/*        p.UpdateCurrentSection(p.rotationLocation < connectedSectionsV.Count?
-                               connectedSections[p.rotationLocation] : null);
-*/        p.canMove = true;
+        p.canMove = true;
     }
 }

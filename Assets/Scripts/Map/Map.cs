@@ -5,7 +5,6 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     public static Map instance;
-    Player player;
 
     void Awake()
     {

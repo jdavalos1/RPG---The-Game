@@ -13,35 +13,31 @@ public abstract class Moveable : MonoBehaviour
     private float rotateSpeed = 2f;
 
     [SerializeField]
-    protected Section currentSection;
+    protected Connector currentConnector;
+
     [SerializeField]
     protected Section nextSection;
 
+    [SerializeField]
     protected int connectedIndex;
 
+    /// <summary>
+    /// Move the character based on the next section
+    /// </summary>
     protected void Move()
     {
         canMove = false;
-
-        if (nextSection == null) StartCoroutine(currentSection.Move(transform));
-        else if (currentSection == null && nextSection == null) StartCoroutine(DeadEnd());
-        else StartCoroutine(nextSection.Move(transform));
-
-        // Move through the current section and set up the next section
-        // based on whether the character has rotated
-        if(currentSection == nextSection)
-        {
-            currentSection = currentSection.connectedSections[0];
-            nextSection = currentSection;
-        }
-        else
-        {
-            currentSection = nextSection;
-            nextSection = nextSection.connectedSections[1];
-        }
-
+        StartCoroutine(nextSection.Move(transform));
+        currentConnector = nextSection.connecters[connectedIndex];
+        nextSection = currentConnector.connectedSections[connectedIndex];
     }
 
+
+    /// <summary>
+    /// Rotate the character based on the rotation passed
+    /// </summary>
+    /// <param name="newRot">Angles of rotation</param>
+    /// <returns></returns>
     public IEnumerator Rotate(Vector3 newRot)
     {
         Vector3 startRotation = transform.eulerAngles;
@@ -59,10 +55,15 @@ public abstract class Moveable : MonoBehaviour
         canMove = true;
     }
 
-    private IEnumerator DeadEnd()
+    /// <summary>
+    /// The character has hit a dead end and must go back
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator DeadEnd()
     {
         yield return new WaitForSeconds(1);
         yield return StartCoroutine(Rotate(new Vector3(0, 180, 0)));
         canMove = true;
+        nextSection = nextSection.connectedSections[0];
     }
 }

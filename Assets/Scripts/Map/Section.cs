@@ -8,7 +8,9 @@ public class Section : MonoBehaviour
 
     // The sections follow config clockwise config starting from +z
     public List<Section> connectedSections;
-    
+
+    public List<Connector> connecters;
+
     /// <summary>
     /// Moves the character based on the type of section (i.e. forward section
     /// moves forward)

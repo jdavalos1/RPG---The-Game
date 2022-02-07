@@ -8,8 +8,8 @@ public class Character : Moveable
     void Start()
     {
         canMove = true;
-        connectedIndex = 1;
-        nextSection = currentSection;
+        connectedIndex = 0;
+        //nextSection = currentSection.connectedSections[0];
     }
 
     // Update is called once per frame
@@ -21,41 +21,34 @@ public class Character : Moveable
         }
     }
 
+    /// <summary>
+    /// Handle how keyboard presses are handled
+    /// </summary>
     public void HandleInput()
     {
-        if (Input.GetKey(KeyCode.W)) Move();
-        else if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.W))
         {
-            canMove = false;
-
-            connectedIndex--;
-            if(connectedIndex < 1) connectedIndex = currentSection.connectedSections.Count - 1;
-
-            nextSection = currentSection.connectedSections[connectedIndex];
-            // Ensure that we cannot traverse to an empty section or if it's a dead end
-            // past the map
-            if (currentSection.connectedSections.Count < 2) nextSection = null;
-
-            // If there are 2 sections then we know we have to rotate -180, similarly
-            // 4 sections (not including the current section) then -90 degrees (i.e. -360 / 4)
-            StartCoroutine(Rotate(new Vector3(0, -360 / (currentSection.connectedSections.Count - 1), 0)));
+            Move();
         }
         else if (Input.GetKey(KeyCode.D))
         {
             canMove = false;
-
             connectedIndex++;
-            if (connectedIndex >= currentSection.connectedSections.Count) connectedIndex = 1;
+            if (connectedIndex >= currentConnector.connectedSections.Count) connectedIndex = 0;
 
-            // Ensure that we cannot traverse to an empty section or if it's a dead end
-            // past the map
-            if (currentSection.connectedSections.Count < 2) nextSection = null;
+            currentConnector.Rotate(this, 1);
+            nextSection = currentConnector.connectedSections[connectedIndex];
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            canMove = false;
+            connectedIndex--;
+            if (connectedIndex < 0) connectedIndex = currentConnector.connectedSections.Count - 1;
 
-            nextSection = currentSection.connectedSections[connectedIndex];
+            currentConnector.Rotate(this, -1);
+            nextSection = currentConnector.connectedSections[connectedIndex];
 
-            // If there are 2 sections then we know we have to rotate 180, similarly
-            // 4 sections (not including the current section) then 90 degrees (i.e. 360 / 4)
-            StartCoroutine(Rotate(new Vector3(0, 360 / (currentSection.connectedSections.Count - 1), 0)));
         }
     }
+
 }
