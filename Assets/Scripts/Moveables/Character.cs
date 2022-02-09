@@ -26,29 +26,22 @@ public class Character : Moveable
     /// </summary>
     public void HandleInput()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            Move();
+            currentConnector.Move(this);
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             canMove = false;
-            connectedIndex++;
-            if (connectedIndex >= currentConnector.connectedSections.Count) connectedIndex = 0;
-
+            UpdateToNextPositionClockwise();
             currentConnector.Rotate(this, 1);
-            nextSection = currentConnector.connectedSections[connectedIndex];
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             canMove = false;
-            connectedIndex--;
-            if (connectedIndex < 0) connectedIndex = currentConnector.connectedSections.Count - 1;
-
+            UpdateToNextPositionCounterClockwise();
             currentConnector.Rotate(this, -1);
-            nextSection = currentConnector.connectedSections[connectedIndex];
 
         }
     }
-
 }

@@ -4,27 +4,51 @@ using UnityEngine;
 
 public abstract class Moveable : MonoBehaviour
 {
+    /// <summary>
+    /// Forward move speed of the object
+    /// </summary>
     public float moveSpeed = 5;
+
+    /// <summary>
+    /// Used to control whether the character can move
+    /// </summary>
     public bool canMove;
 
+    /// <summary>
+    /// Duration of the character's rotation
+    /// </summary>
     [SerializeField]
     private float rotateDuration = 0.5f;
+    /// <summary>
+    /// Speed at which the character should rotate
+    /// </summary>
     [SerializeField]
     private float rotateSpeed = 2f;
 
+    /// <summary>
+    /// Current connector the character is on
+    /// </summary>
     [SerializeField]
     protected Connector currentConnector;
 
+    /// <summary>
+    /// The upcoming section the character will traverse based on the 
+    /// rotation of the character
+    /// </summary>
     [SerializeField]
     protected Section nextSection;
 
+    /// <summary>
+    /// The current index the character is looking towards. Represents
+    /// the next section in the list of connected sections
+    /// </summary>
     [SerializeField]
     protected int connectedIndex;
 
     /// <summary>
     /// Move the character based on the next section
     /// </summary>
-    protected void Move()
+    public void Move()
     {
         canMove = false;
         StartCoroutine(nextSection.Move(transform));
@@ -55,15 +79,24 @@ public abstract class Moveable : MonoBehaviour
         canMove = true;
     }
 
-    /// <summary>
-    /// The character has hit a dead end and must go back
-    /// </summary>
-    /// <returns></returns>
-    protected IEnumerator DeadEnd()
+    public bool IsSamePosition(int pos)
     {
-        yield return new WaitForSeconds(1);
-        yield return StartCoroutine(Rotate(new Vector3(0, 180, 0)));
-        canMove = true;
-        nextSection = nextSection.connectedSections[0];
+        return pos == connectedIndex;
+    }
+
+    public void UpdateToNextPositionCounterClockwise()
+    {
+        connectedIndex--;
+        if (connectedIndex < 0) connectedIndex = currentConnector.connectedSections.Count - 1;
+
+        nextSection = currentConnector.connectedSections[connectedIndex];
+    }
+
+
+    public void UpdateToNextPositionClockwise()
+    {
+        connectedIndex++;
+        if (connectedIndex >= currentConnector.connectedSections.Count) connectedIndex = 0;
+        nextSection = currentConnector.connectedSections[connectedIndex];
     }
 }

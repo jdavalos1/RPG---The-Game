@@ -6,9 +6,6 @@ public class Section : MonoBehaviour
 {
     private static readonly float DistanceThreshhold = 0.1f;
 
-    // The sections follow config clockwise config starting from +z
-    public List<Section> connectedSections;
-
     public List<Connector> connecters;
 
     /// <summary>

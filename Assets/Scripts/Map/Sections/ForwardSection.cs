@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
  public class ForwardSection : Section
 {
-    /// <summary>
-    /// Handle how the player moves in the forward direction.
-    /// </summary>
-    /// <param name="character">Character to move in the scene</param>
-    /// <returns></returns>
     public override IEnumerator Move(Transform character)
     {
         Moveable p = character.GetComponent<Moveable>();
