@@ -33,22 +33,39 @@ public abstract class Connector : MonoBehaviour
         // locate next section find the previous section's location
         // in the current connector's list of connected sections
         // then add 1/2 of the current section's length
+        Debug.Log(s.name);
+        Debug.Log(name);
         int secIndex = connectedSections.FindIndex(i => i == s);
         secIndex += connectedSections.Count / 2;
         secIndex %= connectedSections.Count;
         return connectedSections[secIndex];
     }
 
-    public Section LocateNextSection(Transform character)
+    /// <summary>
+    /// Find the next section going clockwise
+    /// </summary>
+    /// <param name="currentSection">The current section before movement</param>
+    /// <returns>The next section based on the previous one</returns>
+    public Section FindNextClockwiseSection(Section currentSection)
     {
-        // prev solution
-        Section s = connectedSections.Find(c =>
-        {
-            Vector3 AtoB = (c.transform.position - character.position).normalized;
-            float dotProd = Vector3.Dot(AtoB, character.forward);
-            return dotProd < 0.1f;
-        });
+        int ci = connectedSections.FindIndex(cs => cs == currentSection);
+        ci++;
+        if (ci >= connectedSections.Count) ci = 0;
 
-        return s;
+        return connectedSections[ci];
+    }
+
+    /// <summary>
+    /// Find the next section going counter clockwise
+    /// </summary>
+    /// <param name="currentSection">The current section before movement</param>
+    /// <returns>The next section based on the previous one</returns>
+    public Section FindNextCounterClockwiseSection(Section currentSection)
+    {
+        int ci = connectedSections.FindIndex(cs => cs == currentSection);
+        ci--;
+        if (ci < 0) ci = connectedSections.Count - 1;
+
+        return connectedSections[ci];
     }
 }

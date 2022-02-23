@@ -32,15 +32,16 @@ public class Character : Moveable
         else if (Input.GetKeyDown(KeyCode.D))
         {
             canMove = false;
-            UpdateToNextPositionClockwise();
+            nextSection = currentConnector.FindNextClockwiseSection(nextSection);
+            //UpdateToNextPositionClockwise();
             currentConnector.Rotate(this, 1);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
             canMove = false;
-            UpdateToNextPositionCounterClockwise();
+            //UpdateToNextPositionCounterClockwise();
+            nextSection = currentConnector.FindNextCounterClockwiseSection(nextSection);
             currentConnector.Rotate(this, -1);
-            Debug.Log(transform.forward);
         }
     }
 }

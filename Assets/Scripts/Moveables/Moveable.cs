@@ -58,10 +58,12 @@ public abstract class Moveable : MonoBehaviour
         if (ci >= nextSection.connecters.Count) ci = 0;
         currentConnector = nextSection.connecters[ci];
         nextSection = currentConnector.FindNextSection(nextSection);
-        Debug.Log(nextSection.name);
     }
 
-
+    public void UpdateNextSection()
+    {
+        nextSection = currentConnector.FindNextSection(nextSection);
+    }
     /// <summary>
     /// Rotate the character based on the rotation passed
     /// </summary>
@@ -86,36 +88,7 @@ public abstract class Moveable : MonoBehaviour
 
     public bool IsSamePosition(int pos)
     {
-        return pos == connectedIndex;
-    }
-
-    // TODO - update how the rotation position is found by creating functions
-    // that are in the connector to not expose the connected sections to outside
-    // use
-
-    public void UpdateToNextPositionCounterClockwise()
-    {
-        int ci = currentConnector.connectedSections.FindIndex(s => nextSection == s);
-        ci--;
-        if (ci < 0) ci = currentConnector.connectedSections.Count - 1;
-        //nextSection = currentConnector.connectedSections[ci];
-
-        connectedIndex--;
-        if (connectedIndex < 0) connectedIndex = currentConnector.connectedSections.Count - 1;
-
-        nextSection = currentConnector.connectedSections[connectedIndex];
-    }
-
-
-    public void UpdateToNextPositionClockwise()
-    {
-        int ci = currentConnector.connectedSections.FindIndex(s => nextSection == s);
-        ci++;
-        if (ci >= currentConnector.connectedSections.Count) ci = 0;
-        //nextSection = currentConnector.connectedSections[ci];
-
-        connectedIndex++;
-        if (connectedIndex >= currentConnector.connectedSections.Count) connectedIndex = 0;
-        nextSection = currentConnector.connectedSections[connectedIndex];
+        int ci = currentConnector.connectedSections.FindIndex(s => s == nextSection);
+        return pos == ci;
     }
 }

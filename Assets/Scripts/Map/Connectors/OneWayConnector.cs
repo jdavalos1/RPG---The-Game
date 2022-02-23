@@ -36,8 +36,8 @@ public class OneWayConnector : Connector
     {
         yield return new WaitForSeconds(1);
         yield return StartCoroutine(character.Rotate(rotation));
-
-        character.UpdateToNextPositionClockwise();
+        character.UpdateNextSection();
+        //character.UpdateToNextPositionClockwise();
         character.canMove = true;
     }
 }
