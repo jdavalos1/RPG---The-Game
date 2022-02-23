@@ -9,7 +9,6 @@ public class Character : Moveable
     {
         canMove = true;
         connectedIndex = 0;
-        //nextSection = currentSection.connectedSections[0];
     }
 
     // Update is called once per frame
@@ -41,7 +40,7 @@ public class Character : Moveable
             canMove = false;
             UpdateToNextPositionCounterClockwise();
             currentConnector.Rotate(this, -1);
-
+            Debug.Log(transform.forward);
         }
     }
 }

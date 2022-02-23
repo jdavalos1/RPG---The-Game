@@ -6,6 +6,9 @@ public class Map : MonoBehaviour
 {
     public static Map instance;
 
+    [SerializeField]
+    private Section beginnningSection;
+
     void Awake()
     {
         instance = this;

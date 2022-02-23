@@ -21,4 +21,34 @@ public abstract class Connector : MonoBehaviour
     /// </summary>
     /// <param name="character">Character to move</param>
     public abstract void Move(Moveable character);
+
+    /// <summary>
+    /// Obtains the section in front of the current section
+    /// based on the connector and its length
+    /// </summary>
+    /// <param name="s">current section traversing thorugh</param>
+    /// <returns>Next section being faced</returns>
+    public Section FindNextSection(Section s)
+    {
+        // locate next section find the previous section's location
+        // in the current connector's list of connected sections
+        // then add 1/2 of the current section's length
+        int secIndex = connectedSections.FindIndex(i => i == s);
+        secIndex += connectedSections.Count / 2;
+        secIndex %= connectedSections.Count;
+        return connectedSections[secIndex];
+    }
+
+    public Section LocateNextSection(Transform character)
+    {
+        // prev solution
+        Section s = connectedSections.Find(c =>
+        {
+            Vector3 AtoB = (c.transform.position - character.position).normalized;
+            float dotProd = Vector3.Dot(AtoB, character.forward);
+            return dotProd < 0.1f;
+        });
+
+        return s;
+    }
 }
