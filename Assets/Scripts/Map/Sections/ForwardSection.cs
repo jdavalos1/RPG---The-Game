@@ -6,11 +6,14 @@ using UnityEngine;
     public override IEnumerator Move(Transform character)
     {
         Moveable p = character.GetComponent<Moveable>();
-        Vector3 endPos = new Vector3(transform.lossyScale.x * character.forward.x,
+
+        Vector3 transScale = SectionTools.TranslateVector(transform.lossyScale, Quaternion.Euler(transform.eulerAngles));
+
+        Vector3 endPos = new Vector3(transScale.x * character.forward.x,
                                      transform.lossyScale.y * character.forward.y,
                                      transform.lossyScale.z * character.forward.z);
 
-        yield return StartCoroutine(ForwardMovementInSection(character, endPos));
+        yield return StartCoroutine(SectionTools.ForwardMovementInSection(character, endPos, DistanceThreshhold));
 
         p.canMove = true;
     }

@@ -33,8 +33,6 @@ public abstract class Connector : MonoBehaviour
         // locate next section find the previous section's location
         // in the current connector's list of connected sections
         // then add 1/2 of the current section's length
-        Debug.Log(s.name);
-        Debug.Log(name);
         int secIndex = connectedSections.FindIndex(i => i == s);
         secIndex += connectedSections.Count / 2;
         secIndex %= connectedSections.Count;

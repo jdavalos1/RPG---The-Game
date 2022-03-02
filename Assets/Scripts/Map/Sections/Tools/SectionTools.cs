@@ -2,21 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Section : MonoBehaviour
+public static class SectionTools
 {
-    protected static readonly float DistanceThreshhold = 0.1f;
-
-    public List<Connector> connecters;
-
-    /// <summary>
-    /// Moves the character based on the type of section (i.e. forward section
-    /// moves forward)
-    /// </summary>
-    /// <param name="character">Transform to move</param>
-    /// <returns></returns>
-    public virtual IEnumerator Move(Transform character) { yield return null; }
-
-
     // TOOLS FOR MOVEMENT
 
     /// <summary>
@@ -28,7 +15,7 @@ public class Section : MonoBehaviour
     /// <param name="character">Transform to move forward</param>
     /// <param name="endPos">End location of movement</param>
     /// <returns></returns>
-    protected IEnumerator ForwardMovementInSection(Transform character, Vector3 endPos)
+    public static IEnumerator ForwardMovementInSection(Transform character, Vector3 endPos, float distanceThreshhold)
     {
         CharacterController cc = character.GetComponent<CharacterController>();
         Vector3 startPos = new Vector3(0, 0, 0), incVec;
@@ -37,7 +24,7 @@ public class Section : MonoBehaviour
         float dist = Vector3.Distance(startPos, endPos);
 
         // The distance threshhold will determine how far we move.
-        while (dist > DistanceThreshhold)
+        while (dist > distanceThreshhold)
         {
             float inc = Time.deltaTime * c.moveSpeed;
             incVec = character.forward * inc;
@@ -46,5 +33,22 @@ public class Section : MonoBehaviour
             dist = Vector3.Distance(endPos, startPos);
             yield return null;
         }
+    }
+    
+    public static List<Vector3> TranslateVectors(List<Vector3> lossyScales, Quaternion rot)
+    {
+        for (int i = 0; i < lossyScales.Count; i++)
+        {
+            Vector3 temp = rot * lossyScales[i];
+            lossyScales[i] = new Vector3(Mathf.Abs(temp.x), Mathf.Abs(temp.y), Mathf.Abs(temp.z));
+        }
+
+        return lossyScales;
+    }
+
+    public static Vector3 TranslateVector(Vector3 lossyScale, Quaternion rot)
+    {
+        Vector3 temp = rot * lossyScale;
+        return new Vector3(Mathf.Abs(temp.x), Mathf.Abs(temp.y), Mathf.Abs(temp.z));
     }
 }
